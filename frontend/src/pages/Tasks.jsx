@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../axiosConfig';
 import TaskForm from '../components/TaskForm';
-import TaskList from '../components/TaskList';
+import TaskList from '../components/TaskList'; // ✅ HERE
 import { useAuth } from '../context/AuthContext';
 
 const Tasks = () => {
@@ -12,16 +12,18 @@ const Tasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axiosInstance.get('/api/tasks', {
+        const response = await axiosInstance.get('/api/licenses', {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         setTasks(response.data);
       } catch (error) {
-        alert('Failed to fetch tasks.');
+        alert('No licenses available.');
       }
     };
 
-    fetchTasks();
+    if (user?.token) {
+      fetchTasks();
+    }
   }, [user]);
 
   return (
@@ -32,7 +34,13 @@ const Tasks = () => {
         editingTask={editingTask}
         setEditingTask={setEditingTask}
       />
-      <TaskList tasks={tasks} setTasks={setTasks} setEditingTask={setEditingTask} />
+
+      {/* THIS USES TaskList */}
+      <TaskList
+        tasks={tasks}
+        setTasks={setTasks}
+        setEditingTask={setEditingTask}
+      />
     </div>
   );
 };
