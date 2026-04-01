@@ -6,6 +6,7 @@ on:
       - main
       - license-feature
       - license-testcase
+      - cicd-implementation
   pull_request:
     branches:
       - main
