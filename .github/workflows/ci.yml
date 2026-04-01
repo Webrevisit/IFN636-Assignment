@@ -1,28 +1,86 @@
-name: CI
+name: License Manager CI/CD
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+      - license-feature
+      - license-testcase
+  pull_request:
+    branches:
+      - main
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build-and-test:
+    name: Build and Test
+    runs-on: self-hosted
 
-        steps:
-        - name: Checkout code
-            uses: actions/checkout@v2
+    strategy:
+      matrix:
+        node-version: [18]
 
-        - name: Set up Node.js
-            uses: actions/setup-node@v2
-            with:
-                node-version: '14'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-        - name: Install dependencies
-            run: npm install
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-        - name: Run tests
-            run: npm test
+      - name: Print Environment Secrets
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PORT: ${{ secrets.PORT }}
+        run: |
+          echo "MONGO_URI is set"
+          echo "JWT_SECRET is set"
+          echo "PORT is set"
+
+      - name: Stop Running Services
+        run: pm2 stop all || true
+
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: |
+          npm install
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: |
+          npm install
+
+      - name: Run Backend Tests
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PORT: ${{ secrets.PORT }}
+        working-directory: ./backend
+        run: npm test
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+
+  deploy:
+    name: Deploy to EC2
+    needs: build-and-test
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Create Backend .env File
+        run: |
+          cd backend
+          touch .env
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+
+      - name: Restart Backend with PM2
+        run: |
+          pm2 restart license-backend || pm2 start backend/server.js --name license-backend
+          pm2 status
