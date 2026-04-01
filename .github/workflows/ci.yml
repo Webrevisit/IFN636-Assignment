@@ -83,5 +83,5 @@ jobs:
 
       - name: Restart Backend with PM2
         run: |
-          pm2 restart license-backend || pm2 start backend/server.js --name license-backend
-          pm2 status
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 restart license-backend || /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 start backend/server.js --name license-backend
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 status
