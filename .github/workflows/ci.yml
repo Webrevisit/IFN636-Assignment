@@ -13,7 +13,7 @@ on:
       - main
 
 jobs:
-  test-and-deploy:
+  build-and-test:
     name: Build and Test
     runs-on: self-hosted
 
@@ -80,26 +80,31 @@ jobs:
           touch .env
           echo "${{ secrets.PROD }}" > .env
 
-      - name: Free ports safely
-        run: |
-          if lsof -i:5001 -t > /dev/null; then
-            echo "Port 5001 in use. Killing..."
-            sudo fuser -k 5001/tcp
-          else
-            echo "Port 5001 is free"
-          fi
+      - name: Install Backend Dependencies on Runner
+        working-directory: ./backend
+        run: npm install
 
-          if lsof -i:3000 -t > /dev/null; then
-            echo "Port 3000 in use. Killing..."
-            sudo fuser -k 3000/tcp
-          else
-            echo "Port 3000 is free"
-          fi
+      - name: Install Frontend Dependencies on Runner
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build Frontend for Deployment
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Create Backend .env File
+        run: |
+          cd backend
+          touch .env
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
 
       - name: Restart Backend with PM2
         run: |
+          kill -9 $(lsof -t -i:5001) || true
+          kill -9 $(lsof -t -i:3000) || true
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 delete license-backend || true
-          cd backend
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 start backend/server.js --name license-backend
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 status
 
