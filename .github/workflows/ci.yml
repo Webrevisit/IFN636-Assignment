@@ -118,13 +118,13 @@ jobs:
       - name: Restart Backend with PM2
         run: |
           kill -9 $(lsof -t -i:5001) || true
+          kill -9 $(lsof -t -i:3000) || true
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 delete license-backend || true
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 start backend/server.js --name license-backend
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 status
 
       - name: Restart Frontend with PM2
         run: |
-          kill -9 $(lsof -t -i:3000) || true
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 delete Frontend || true
           cd frontend
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 serve build 3000 --name Frontend --spa
