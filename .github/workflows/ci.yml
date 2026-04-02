@@ -42,8 +42,9 @@ jobs:
           echo "Secret 2 is set"
           echo "Secret 3 is set"
 
-      - name: Run pm2 stop all
-        run: /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 stop all || true
+      - name: Stop Running Services
+        run: |
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 stop all || true
 
       - name: Install Backend Dependencies
         working-directory: ./backend
@@ -74,38 +75,36 @@ jobs:
       - name: Run npm ci
         run: npm ci
 
-      - name: Create backend env file
-        run: |
-          cd ./backend
-          touch .env
-          echo "${{ secrets.PROD }}" > .env
-
-      - name: Install Backend Dependencies on Runner
-        working-directory: ./backend
-        run: npm install
-
-      - name: Install Frontend Dependencies on Runner
-        working-directory: ./frontend
-        run: npm install
-
-      - name: Build Frontend for Deployment
-        working-directory: ./frontend
-        run: npm run build
-
       - name: Create Backend .env File
         run: |
           cd backend
-          touch .env
-          echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          echo "PORT=${{ secrets.PORT }}" >> .env
+          cat > .env <<EOF
+          MONGO_URI=${{ secrets.MONGO_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          PORT=${{ secrets.PORT }}
+          EOF
+
+      - name: Free Ports Safely
+        run: |
+          if lsof -i:5001 -t > /dev/null; then
+            echo "Port 5001 in use. Killing..."
+            sudo fuser -k 5001/tcp
+          else
+            echo "Port 5001 is free"
+          fi
+
+          if lsof -i:3000 -t > /dev/null; then
+            echo "Port 3000 in use. Killing..."
+            sudo fuser -k 3000/tcp
+          else
+            echo "Port 3000 is free"
+          fi
 
       - name: Restart Backend with PM2
         run: |
-          kill -9 $(lsof -t -i:5001) || true
-          kill -9 $(lsof -t -i:3000) || true
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 delete license-backend || true
-          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 start backend/server.js --name license-backend
+          cd backend
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 start server.js --name license-backend
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 status
 
       - name: Restart Frontend with PM2
