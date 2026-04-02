@@ -7,6 +7,7 @@ on:
       - license-feature
       - license-testcase
       - cicd-implementation
+      - usermanagement
   pull_request:
     branches:
       - main
@@ -18,39 +19,50 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18]
+        node-version: [22]
+
+    environment: MONGO_URI
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set Up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Print Environment Secrets
+      - name: Print Env Secret
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           PORT: ${{ secrets.PORT }}
         run: |
-          echo "MONGO_URI is set"
-          echo "JWT_SECRET is set"
-          echo "PORT is set"
+          echo "Secret 1 is set"
+          echo "Secret 2 is set"
+          echo "Secret 3 is set"
 
       - name: Stop Running Services
-        run: pm2 stop all || true
+        run: |
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 stop all || true
 
       - name: Install Backend Dependencies
         working-directory: ./backend
         run: |
-          npm install
+          npm install --global yarn
+          yarn --version
+          yarn install
 
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: |
-          npm install
+          df -h
+          sudo rm -rf ./build
+          yarn install
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: yarn run build
 
       - name: Run Backend Tests
         env:
@@ -60,29 +72,45 @@ jobs:
         working-directory: ./backend
         run: npm test
 
-      - name: Build Frontend
-        working-directory: ./frontend
-        run: npm run build
-
-  deploy:
-    name: Deploy to EC2
-    needs: build-and-test
-    runs-on: self-hosted
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Run npm ci
+        run: npm ci
 
       - name: Create Backend .env File
         run: |
           cd backend
-          touch .env
-          echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          echo "PORT=${{ secrets.PORT }}" >> .env
+          cat > .env <<EOF
+          MONGO_URI=${{ secrets.MONGO_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          PORT=${{ secrets.PORT }}
+          EOF
+
+      - name: Free Ports Safely
+        run: |
+          if lsof -i:5001 -t > /dev/null; then
+            echo "Port 5001 in use. Killing..."
+            sudo fuser -k 5001/tcp
+          else
+            echo "Port 5001 is free"
+          fi
+
+          if lsof -i:3000 -t > /dev/null; then
+            echo "Port 3000 in use. Killing..."
+            sudo fuser -k 3000/tcp
+          else
+            echo "Port 3000 is free"
+          fi
 
       - name: Restart Backend with PM2
         run: |
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 delete license-backend || true
-          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 start backend/server.js --name license-backend
+          cd backend
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 start server.js --name license-backend
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 status
+
+      - name: Restart Frontend with PM2
+        run: |
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 delete Frontend || true
+          cd frontend
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 serve build 3000 --name Frontend --spa
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 status
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 save
