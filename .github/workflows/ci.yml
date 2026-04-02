@@ -43,7 +43,7 @@ jobs:
           echo "Secret 3 is set"
 
       - name: Run pm2 stop all
-        run: pm2 stop all || true
+        run: /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 stop all || true
 
       - name: Install Backend Dependencies
         working-directory: ./backend
@@ -81,10 +81,10 @@ jobs:
           echo "${{ secrets.PROD }}" > .env
 
       - name: Run pm2 start all
-        run: pm2 start all || true
+        run: /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 start all || true
 
       - name: Run pm2 restart all
-        run: pm2 restart all || true
+        run: /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 restart all || true
 
   deploy:
     name: Deploy to EC2
