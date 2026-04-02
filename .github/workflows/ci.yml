@@ -7,6 +7,7 @@ on:
       - license-feature
       - license-testcase
       - cicd-implementation
+      - usermanagement
   pull_request:
     branches:
       - main
@@ -18,39 +19,49 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18]
+        node-version: [22]
+
+    environment: MONGO_URI
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set Up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Print Environment Secrets
+      - name: Print Env Secret
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           PORT: ${{ secrets.PORT }}
         run: |
-          echo "MONGO_URI is set"
-          echo "JWT_SECRET is set"
-          echo "PORT is set"
+          echo "Secret 1 is set"
+          echo "Secret 2 is set"
+          echo "Secret 3 is set"
 
-      - name: Stop Running Services
+      - name: Run pm2 stop all
         run: pm2 stop all || true
 
       - name: Install Backend Dependencies
         working-directory: ./backend
         run: |
-          npm install
+          npm install --global yarn
+          yarn --version
+          yarn install
 
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: |
-          npm install
+          df -h
+          sudo rm -rf ./build
+          yarn install
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: yarn run build
 
       - name: Run Backend Tests
         env:
@@ -60,9 +71,20 @@ jobs:
         working-directory: ./backend
         run: npm test
 
-      - name: Build Frontend
-        working-directory: ./frontend
-        run: npm run build
+      - name: Run npm ci
+        run: npm ci
+
+      - name: Create backend env file
+        run: |
+          cd ./backend
+          touch .env
+          echo "${{ secrets.PROD }}" > .env
+
+      - name: Run pm2 start all
+        run: pm2 start all || true
+
+      - name: Run pm2 restart all
+        run: pm2 restart all || true
 
   deploy:
     name: Deploy to EC2
@@ -72,6 +94,18 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Install Backend Dependencies on Runner
+        working-directory: ./backend
+        run: npm install
+
+      - name: Install Frontend Dependencies on Runner
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build Frontend for Deployment
+        working-directory: ./frontend
+        run: npm run build
 
       - name: Create Backend .env File
         run: |
@@ -85,4 +119,11 @@ jobs:
         run: |
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 delete license-backend || true
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 start backend/server.js --name license-backend
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 status
+
+      - name: Restart Frontend with PM2
+        run: |
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 delete Frontend || true
+          cd frontend
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 serve build 3000 --name Frontend --spa
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 status
