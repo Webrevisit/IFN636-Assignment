@@ -129,3 +129,5 @@ jobs:
           cd frontend
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 serve build 3000 --name Frontend --spa
           /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 status
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 save
+          /home/ubuntu/.nvm/versions/node/v22.22.2/bin/pm2 startup
