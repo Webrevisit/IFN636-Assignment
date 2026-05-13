@@ -90,7 +90,7 @@ describe('License Controller Function Tests', () => {
   // GET LICENSES TESTS
   // =========================
   describe('GetLicenses Function Test', () => {
-    it('should return all licenses for the given user', async () => {
+    it('should return all licenses', async () => {
       const userId = new mongoose.Types.ObjectId();
 
       const mockLicenses = [
@@ -127,7 +127,7 @@ describe('License Controller Function Tests', () => {
 
       await getLicenses(req, res);
 
-      expect(findStub.calledOnceWith({ userId: req.user.id })).to.be.true;
+      expect(findStub.calledOnceWith({})).to.be.true;
       expect(res.json.calledWith(mockLicenses)).to.be.true;
     });
 
