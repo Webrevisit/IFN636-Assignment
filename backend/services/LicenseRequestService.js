@@ -1,6 +1,6 @@
 const LicenseRequest = require('../models/LicenseRequest');
-const License = require('../models/License');
 const LicenseRequestFactory = require('../patterns/LicenseRequestFactory');
+const LicenseFacade = require('../patterns/LicenseFacade');
 
 class LicenseRequestService {
   static async createRequest({ userId, licenseId, reason, requestType }) {
@@ -45,30 +45,10 @@ class LicenseRequestService {
       throw new Error('Request already processed');
     }
 
-    const license = await License.findById(request.licenseId);
-
-    if (!license) {
-      throw new Error('License not found');
-    }
-
-    if (!Array.isArray(license.assignedTo)) {
-      license.assignedTo = [];
-    }
-
-    const alreadyAssigned = license.assignedTo.some(
-      (id) => String(id) === String(request.userId)
+    await LicenseFacade.assignLicenseToUser(
+      request.licenseId,
+      request.userId
     );
-
-    if (alreadyAssigned) {
-      throw new Error('User already has this license');
-    }
-
-    if (license.assignedTo.length >= license.totalLicenses) {
-      throw new Error('No available licenses left');
-    }
-
-    license.assignedTo.push(request.userId);
-    await license.save();
 
     request.status = 'approved';
     return await request.save();
