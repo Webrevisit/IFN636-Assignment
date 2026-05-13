@@ -1,45 +1,22 @@
 const LicenseRequest = require('../models/LicenseRequest');
 const License = require('../models/License');
-
-class BaseLicenseRequest {
-  constructor(userId, licenseId, reason) {
-    this.userId = userId;
-    this.licenseId = licenseId;
-    this.reason = reason;
-  }
-
-  getPriority() {
-    return 'normal';
-  }
-
-  getRequestType() {
-    return 'normal';
-  }
-}
-
-class UrgentLicenseRequest extends BaseLicenseRequest {
-  getPriority() {
-    return 'high';
-  }
-
-  getRequestType() {
-    return 'urgent';
-  }
-}
+const LicenseRequestFactory = require('../patterns/LicenseRequestFactory');
 
 class LicenseRequestService {
   static async createRequest({ userId, licenseId, reason, requestType }) {
-    const request =
-      requestType === 'urgent'
-        ? new UrgentLicenseRequest(userId, licenseId, reason)
-        : new BaseLicenseRequest(userId, licenseId, reason);
+    const request = LicenseRequestFactory.createRequest(
+      requestType,
+      userId,
+      licenseId,
+      reason
+    );
 
     return await LicenseRequest.create({
       userId: request.userId,
       licenseId: request.licenseId,
       reason: request.reason,
-      requestType: request.getRequestType(),
-      priority: request.getPriority(),
+      requestType: request.requestType,
+      priority: request.priority,
       status: 'pending',
     });
   }
