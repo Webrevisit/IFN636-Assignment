@@ -7,4 +7,5 @@ const router = express.Router();
 router.get('/', protect, adminOnly, getUsers);
 router.put('/:id', protect, adminOnly, updateUser);
 
+
 module.exports = router;

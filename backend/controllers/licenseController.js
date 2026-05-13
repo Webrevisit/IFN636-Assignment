@@ -3,7 +3,7 @@ const License = require('../models/License');
 // GET all Licenses
 const getLicenses = async (req, res) => {
   try {
-    const licenses = await License.find({ userId: req.user.id });
+    const licenses = await License.find({});
     res.json(licenses);
   } catch (error) {
     res.status(500).json({ message: error.message });

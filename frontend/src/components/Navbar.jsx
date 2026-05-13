@@ -24,6 +24,7 @@ const Navbar = () => {
               <>
                 <Link to="/tasks" className="mr-4">Licenses</Link>
                 <Link to="/users" className="mr-4">Users</Link>
+                <Link to="/requests" className="mr-4">Requests</Link>
               </>
             )}
 

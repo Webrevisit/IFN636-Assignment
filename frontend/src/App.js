@@ -6,6 +6,8 @@ import Profile from './pages/Profile';
 import Tasks from './pages/Tasks';
 import UserPage from './pages/UserPage';
 import Users from './pages/Users';
+import RequestLicense from './pages/RequestLicense';
+import AdminRequests from './pages/AdminRequests';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/user" element={<UserPage />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/request-license" element={<RequestLicense />} />
+        <Route path="/requests" element={<AdminRequests />} />
       </Routes>
     </Router>
   );
