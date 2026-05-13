@@ -108,6 +108,7 @@ const UserPage = () => {
     if (user?.token) {
       loadData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const handleSubmitRequest = async (e) => {
