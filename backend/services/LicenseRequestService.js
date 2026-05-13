@@ -1,6 +1,12 @@
 const LicenseRequest = require('../models/LicenseRequest');
 const LicenseRequestFactory = require('../patterns/LicenseRequestFactory');
 const LicenseFacade = require('../patterns/LicenseFacade');
+const {
+  ConsoleNotificationService,
+  NotificationAdapter,
+} = require('../patterns/NotificationAdapter');
+
+const notification = new NotificationAdapter(new ConsoleNotificationService());
 
 class LicenseRequestService {
   static async createRequest({ userId, licenseId, reason, requestType }) {
@@ -51,6 +57,7 @@ class LicenseRequestService {
     );
 
     request.status = 'approved';
+    notification.sendNotification('License request approved successfully');
     return await request.save();
   }
 
@@ -66,6 +73,7 @@ class LicenseRequestService {
     }
 
     request.status = 'rejected';
+    notification.sendNotification('License request rejected successfully');
     return await request.save();
   }
 }
