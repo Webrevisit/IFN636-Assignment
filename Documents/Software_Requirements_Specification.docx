@@ -1,0 +1,215 @@
+1. SRS Documentation
+1.1 Project Overview and Purpose
+Project Name
+License Management System - Devolenz Software License Management System
+Project Overview
+The Devolenz Software License Management System is a web-based application developed to help organisations manage software licenses efficiently through a centralized platform. The system simplifies the process of storing, tracking, assigning, and monitoring software licenses within an organisation.
+Many organisations still manage licenses manually using spreadsheets or disconnected systems, which often causes duplicate assignments, poor visibility of available licenses, and delays in license approval. This project solves these issues by automating the software license management process.
+Core Purpose
+The main purpose of the system is to:
+•	Centralize software license management
+•	Reduce manual tracking errors
+•	Improve license visibility and monitoring
+•	Simplify software license requests and approvals
+•	Prevent duplicate license assignments
+
+Main Functionality
+The system provides:
+•	User registration and login
+•	Role-based authentication
+•	Software license management
+•	License assignment and removal
+•	License request and approval workflow
+•	Normal and urgent request handling
+•	Dashboard monitoring
+•	User management
+•	AWS cloud deployment and monitoring
+Intended Users
+The intended users of the system are:
+•	System administrators
+•	Employees/users within an organisation
+Administrators manage licenses and users, while normal users can request and view assigned licenses.
+1.2 Problem Statement and Scope
+Problem Statement
+Many organisations face difficulties managing software licenses due to manual processes and lack of centralized systems. These problems include:
+•	Difficulty tracking license availability
+•	Duplicate software assignments
+•	Delayed approval workflows
+•	Lack of centralized monitoring
+•	Increased operational overhead
+•	Risk of expired or unavailable licenses
+The Devolenz Software License Management System addresses these issues by providing a secure and centralized software license management platform.
+Project Scope
+Included in Scope
+•	User authentication and authorization
+•	User registration and login
+•	Software license management
+•	License assignment and removal
+•	License request management
+•	Request approval and rejection
+•	Role-based access control
+•	AWS cloud deployment
+•	Load balancing using AWS Application Load Balancer
+•	Monitoring using AWS CloudWatch
+Excluded from Scope
+•	Mobile application support
+•	Integration with external enterprise systems
+•	Advanced AI analytics
+•	Software purchasing functionality
+1.3 User Characteristics
+Administrators
+•	IT administrators or software managers
+•	Moderate to advanced technical knowledge
+•	Responsible for managing licenses and users
+•	Can approve or reject license requests
+•	Can monitor license assignments and availability
+Standard Users
+•	Employees within the organisation
+•	Basic technical knowledge
+•	Can request software licenses
+•	Can view assigned licenses
+•	Can monitor request status
+Design Considerations
+The system was designed with:
+•	Simple and responsive interface
+•	Easy navigation menus
+•	Role-based dashboards
+•	Clear validation and error messages
+•	User-friendly request workflow
+1.4 Constraints
+Technical Constraints
+•	Deployment limited to AWS EC2 Free Tier resources
+•	MongoDB used as backend database
+•	Application hosted on Ubuntu EC2 instances
+•	JWT-based authentication implemented
+•	Load balancing configured using AWS Application Load Balancer
+•	Internet connection required for access
+Business Constraints
+•	Limited project timeline
+•	Team collaboration requirements
+•	Requirement to implement CI/CD pipeline
+Security Constraints
+•	Secure password encryption required
+•	Protected API routes required
+•	Role-based access control required
+1.5 Functional Requirements
+ID	Functional Requirement
+FR-01	The system shall allow users to register accounts.
+FR-02	The system shall prevent duplicate email registration.
+FR-03	The system shall allow users to login securely.
+FR-04	The system shall support role-based authentication.
+FR-05	The system shall allow administrators to add software licenses.
+FR-06	The system shall allow administrators to edit software licenses.
+FR-07	The system shall allow administrators to delete software licenses.
+FR-08	The system shall display all available licenses.
+FR-09	The system shall allow administrators to assign licenses to users.
+FR-10	The system shall allow administrators to remove assigned licenses.
+FR-11	The system shall prevent duplicate license assignments.
+FR-12	The system shall allow users to request software licenses.
+FR-13	The system shall support normal and urgent request types.
+FR-14	The system shall allow administrators to approve license requests.
+FR-15	The system shall allow administrators to reject license requests.
+FR-16	The system shall automatically assign licenses after approval.
+FR-17	The system shall allow users to view assigned licenses.
+FR-18	The system shall provide role-based navigation menus.
+FR-19	The system shall allow users to logout securely.
+FR-20	The system shall support AWS cloud deployment.
+FR-21	The system shall support traffic distribution using load balancing.
+
+1.6 Non-Functional Requirements (NFRs)
+ID	Non-Functional Requirement
+NFR-01	The system shall respond within 2 seconds under normal load.
+NFR-02	The system shall support concurrent user access.
+NFR-03	The system shall provide secure authentication using JWT.
+NFR-04	The system shall maintain high availability using load balancing.
+NFR-05	The system shall support scalability through AWS cloud infrastructure.
+NFR-06	The system shall maintain secure password encryption.
+NFR-07	The system shall provide role-based access control.
+NFR-08	The system shall maintain data consistency and integrity.
+NFR-09	The system shall provide maintainable modular code structure.
+NFR-10	The user interface shall be responsive and user-friendly.
+NFR-11	The system shall support reliable database operations.
+NFR-12	The system shall support system monitoring using AWS CloudWatch.
+
+1.7 User Interface Mockups/Wireframes (Low Fidelity Design)
+1. Login Page 
+UI Elements
+•	Navigation bar
+•	Login button
+•	Register button
+•	Login 
+Description
+The home page introduces the system and provides navigation to login and registration pages.
+[PLACEHOLDER – Insert Login Page Wireframe Screenshot]
+2. Registration Page
+UI Elements
+•	Email input field
+•	Password input field
+•	Name input field
+•	Register button
+•	Validation messages
+Description
+Users can securely register accounts and login into the system.
+[PLACEHOLDER – Insert Register Wireframe Screenshot]
+3. License Management Dashboard
+UI Elements
+•	Sidebar navigation
+•	License table
+•	Add/Edit/Delete buttons
+•	Assigned users section
+•	Request management section
+Description
+Administrators can manage licenses, assignments, users, and requests.
+[PLACEHOLDER – Insert Admin Dashboard Wireframe Screenshot]
+4. User Dashboard
+UI Elements
+•	Assigned licenses section
+•	License request form
+•	Request status table
+•	Logout button
+Description
+Users can view assigned licenses and submit software license requests.
+[PLACEHOLDER – Insert User Dashboard Wireframe Screenshot]
+5. Request Management Page
+UI Elements
+•	Request table
+•	Approve button
+•	Reject button
+•	Request priority display
+•	Status labels
+Description
+Administrators can manage and process software license requests.
+[PLACEHOLDER – Insert Request Management Screenshot]
+1.8 Complete System Diagram
+System Architecture Components
+Frontend Layer
+•	React.js frontend application
+•	User dashboards and interfaces
+Backend Layer
+•	Node.js and Express.js REST APIs
+•	Authentication and business logic
+Database Layer
+MongoDB database with:
+•	users collection
+•	licenses collection
+•	licenserequests collection
+Cloud Infrastructure
+•	AWS EC2 Instances
+•	AWS Application Load Balancer
+•	AWS CloudWatch Monitoring
+DevOps and Deployment
+•	GitHub Repository
+•	GitHub Actions CI/CD Pipeline
+•	PM2 Process Manager
+System Interaction Flow
+1.	Users access the React frontend using a web browser.
+2.	Frontend sends API requests to the Node.js/Express backend.
+3.	Backend processes requests and communicates with MongoDB.
+4.	Application is hosted on AWS EC2 instances.
+5.	AWS Application Load Balancer distributes incoming traffic.
+6.	AWS CloudWatch monitors system performance and availability.
+7.	GitHub Actions automates CI/CD deployment workflows.
+
+Complete System Architecture Diagram
+[PLACEHOLDER – Insert Complete System Architecture Diagram with Frontend, Backend, MongoDB, GitHub, EC2, Load Balancer, and CloudWatch]
+
