@@ -1,0 +1,406 @@
+IFN636: Software Life Cycle Management
+Assessment 2 – Software Development, Testing and Configuration
+
+Cover Page
+Project Title: Devolenz Software License Management System
+Full Names: [Add Team Member Names]
+Student IDs: [Add Student IDs]
+Tutor’s Full Name: [Add Tutor Name]
+Tutorial Day and Time: [Add Tutorial Details]
+
+IFN636 – Team Agreement Sheet for Assessment 2
+Project Title: Devolenz Software License Management System
+Team Name: [Add Team Name]
+Tutorial Group: [Add Tutorial Group]
+Tutor Name: [Add Tutor Name]
+Team Agreement
+We, the undersigned team members, confirm that the information provided in this team agreement sheet accurately reflects each member’s contribution to this project. We understand that individual marks for Assessment 2 may be adjusted based on this agreement and tutor evaluation.
+Each member also agrees to:
+Communicate regularly and respectfully within the team.
+Complete assigned tasks on time.
+Attend team meetings and participate actively.
+Address any conflicts through discussion and tutor guidance if needed.
+Student Name	Student ID	Role / Tasks Undertaken	Contribution (%)	Signature
+[Add]	[Add]	Backend Development, API Development	[Add]	
+[Add]	[Add]	Frontend Development, UI Design	[Add]	
+[Add]	[Add]	Testing, Deployment, Documentation	[Add]	
+[Add]	[Add]	CI/CD, AWS Deployment, CloudWatch	[Add]	
+Total Contribution: 100%
+GitHub Link: [Add GitHub Repository Link]
+EC2 Instance ID and Name: [Add EC2 Instance Details]
+
+1. SRS Documentation
+1.1 Project Overview and Purpose
+The Devolenz Software License Management System is a web-based application designed to help organisations manage software licenses efficiently. The system allows administrators to maintain software inventory, assign licenses to employees, monitor license usage, and manage license requests through a centralized platform.
+The main purpose of the application is to reduce manual tracking errors, improve visibility of available licenses, and simplify the process of assigning and monitoring software licenses within an organisation.
+The application provides role-based functionality for administrators and users. Administrators can add, edit, assign, and delete licenses, while users can request software licenses and monitor assigned licenses.
+
+1.2 Problem Statement and Scope
+Problem Statement
+Many organisations still manage software licenses manually using spreadsheets or disconnected systems. This creates issues such as:
+Difficulty tracking license availability
+Risk of expired licenses
+Lack of centralized monitoring
+Manual approval delays
+Increased operational overhead
+The proposed system addresses these issues by providing an automated and centralized license management platform.
+Project Scope
+The project includes:
+User authentication and authorization
+License management
+License request system
+User management
+License assignment tracking
+Cloud deployment using AWS EC2
+Load balancing using AWS Application Load Balancer
+Monitoring using AWS CloudWatch
+Out of Scope
+The project does not include:
+Integration with external enterprise identity systems
+Payment processing
+Mobile application support
+Advanced analytics dashboard
+
+1.3 User Characteristics
+Administrators
+IT administrators or software managers
+Moderate to advanced technical knowledge
+Responsible for managing licenses and users
+Require access to monitoring and reporting features
+Users
+Employees within the organisation
+Basic technical knowledge
+Can request software licenses
+Can monitor assigned licenses
+The system was designed with a simple and responsive interface to support users with different technical skill levels.
+
+1.4 Constraints
+The following constraints influenced the development of the project:
+Technical Constraints
+Deployment limited to AWS EC2 Free Tier resources
+Application hosted using Ubuntu EC2 instances
+Load balancing configured using AWS Application Load Balancer
+MongoDB used as the backend database
+Business Constraints
+Limited project timeline
+Team collaboration requirements
+Requirement to implement CI/CD pipeline
+Security Constraints
+JWT-based authentication required
+Restricted API access for protected routes
+Secure password handling required
+
+1.5 Functional Requirements
+ID	Functional Requirement
+FR-01	The system shall allow users to register an account.
+FR-02	The system shall allow users to login securely.
+FR-03	The system shall allow administrators to add software licenses.
+FR-04	The system shall allow administrators to edit licenses.
+FR-05	The system shall allow administrators to delete licenses.
+FR-06	The system shall display all available licenses.
+FR-07	The system shall allow users to request licenses.
+FR-08	The system shall allow administrators to approve or reject requests.
+FR-09	The system shall track assigned licenses.
+FR-10	The system shall allow administrators to manage users.
+FR-11	The system shall support cloud deployment using AWS.
+FR-12	The system shall distribute traffic using load balancing.
+
+1.6 Non-Functional Requirements (NFRs)
+ID	Non-Functional Requirement
+NFR-01	The system shall respond within 2 seconds under normal load.
+NFR-02	The system shall support concurrent user access.
+NFR-03	The system shall provide secure authentication using JWT.
+NFR-04	The system shall maintain high availability using load balancing.
+NFR-05	The system shall support scalability through cloud infrastructure.
+NFR-06	The system shall provide maintainable modular code structure.
+NFR-07	The user interface shall be responsive and user-friendly.
+NFR-08	The system shall maintain data consistency and integrity.
+
+1.7 User Interface Mockups/Wireframes (Low Fidelity Design)
+Home Page
+[PLACEHOLDER – Insert Home Page Wireframe Screenshot]
+Login and Registration Page
+[PLACEHOLDER – Insert Login/Register Wireframe Screenshot]
+License Management Dashboard
+[PLACEHOLDER – Insert Dashboard Wireframe Screenshot]
+Request Management Page
+[PLACEHOLDER – Insert Request Management Wireframe Screenshot]
+
+1.8 Complete System Diagram
+The system architecture consists of:
+React frontend application
+Node.js/Express backend API
+MongoDB database
+AWS EC2 instances
+AWS Application Load Balancer
+AWS CloudWatch monitoring
+GitHub repository and GitHub Actions CI/CD pipeline
+The frontend communicates with the backend APIs through HTTP requests. The backend interacts with MongoDB for data storage and retrieval. The application is deployed on two EC2 instances behind an AWS Application Load Balancer to improve reliability and availability.
+[PLACEHOLDER – Insert Complete System Architecture Diagram]
+
+2. Implementation and Design Pattern
+2.1 Design Patterns
+1. Singleton Pattern
+The Singleton pattern was used to manage database connections efficiently. This ensures that only one database connection instance is maintained throughout the application lifecycle.
+Justification:
+The Singleton pattern improves resource management and prevents unnecessary multiple database connections.
+[PLACEHOLDER – Insert Singleton Pattern Backend Code Screenshot]
+
+2. Factory Pattern
+The Factory pattern was implemented to generate license request objects dynamically.
+Justification:
+The Factory pattern improves flexibility and reduces code duplication when creating different request objects.
+[PLACEHOLDER – Insert Factory Pattern Backend Code Screenshot]
+
+3. MVC Pattern
+The project follows the Model-View-Controller architecture.
+Models manage database schemas
+Controllers manage business logic
+Views/frontend manage user interface
+Justification:
+MVC improves maintainability, scalability, and separation of concerns.
+[PLACEHOLDER – Insert MVC Structure Screenshot]
+
+4. Middleware Pattern
+Middleware was implemented in Express.js to manage authentication and authorization.
+Justification:
+Middleware centralizes request validation and security logic.
+[PLACEHOLDER – Insert Middleware Code Screenshot]
+
+5. Observer Pattern
+The Observer pattern was used for handling notifications and request status updates.
+Justification:
+The Observer pattern allows automatic updates when request status changes occur.
+[PLACEHOLDER – Insert Observer Pattern Code Screenshot]
+
+2.2 Implementation of OOP
+Encapsulation
+Sensitive data and internal logic were encapsulated inside classes and modules.
+Justification:
+Encapsulation improves security and maintainability.
+[PLACEHOLDER – Insert Encapsulation Code Screenshot]
+
+Inheritance
+Inheritance was implemented using reusable classes and schema extensions.
+Justification:
+Inheritance reduces code duplication and improves scalability.
+[PLACEHOLDER – Insert Inheritance Code Screenshot]
+
+Polymorphism
+Polymorphism was used for handling different request operations dynamically.
+Justification:
+Polymorphism increases flexibility in handling different functionalities.
+[PLACEHOLDER – Insert Polymorphism Code Screenshot]
+
+Abstraction
+Abstraction was implemented through service layers and reusable functions.
+Justification:
+Abstraction simplifies complex implementation details.
+[PLACEHOLDER – Insert Abstraction Code Screenshot]
+
+3. API Testing
+API testing was performed using Postman to validate backend endpoints.
+The following APIs were tested:
+User Registration API
+Login API
+Add License API
+Update License API
+Delete License API
+License Request API
+User Management API
+The API responses were validated for correct status codes, authentication handling, and database operations.
+[PLACEHOLDER – Insert Postman API Collection Screenshot]
+[PLACEHOLDER – Insert API Response Screenshot]
+
+4. Functional Testing
+Functional testing was conducted to validate that all major features of the Devolenz Software License Management System operated according to the specified functional requirements. Testing was performed on both frontend and backend functionalities to ensure correct behavior, user interaction, role-based access control, request processing, and database operations.
+The testing process focused on validating:
+Authentication and authorization
+License management operations
+User management functionalities
+License request workflow
+Role-based navigation
+Error handling and validation
+Session management
+The application was tested using realistic user scenarios involving both administrator and standard user accounts. All core functionalities passed successfully without critical failures.
+
+4.1 Functional Testing Approach
+The testing approach involved executing predefined test cases and verifying whether the actual application behavior matched the expected system behavior.
+The testing process included:
+1.Executing valid and invalid user actions
+2.Verifying API responses and frontend behavior
+3.Checking database updates after operations
+4.Validating access permissions based on user roles
+5.Monitoring error handling and validation messages
+Testing was conducted after integrating frontend and backend modules to ensure complete end-to-end functionality.
+
+4.2 Functional Test Cases
+Test ID	Functionality	Expected Result	Actual Result	Status
+FT-01	Admin Login	Admin should login with valid credentials and navigate to admin dashboard	Admin logged in successfully and dashboard displayed	PASS
+FT-02	Invalid Login	System should show error for incorrect email or password	Error message displayed: invalid email or password	PASS
+FT-03	User Login	User should login with valid credentials and navigate to user dashboard	User logged in successfully and user dashboard displayed	PASS
+FT-04	Add License	Admin should be able to add a new software license	New license was added and displayed in the license list	PASS
+FT-05	Update License	Admin should be able to edit an existing license	License details were updated successfully	PASS
+FT-06	Delete License	Admin should be able to delete a selected license	Selected license was removed from the license list	PASS
+FT-07	View All Users	Admin should be able to view registered users	User list displayed with name, email, role and action options	PASS
+FT-08	Assign License to User	Admin should be able to assign available license to a user	License was assigned to the selected user	PASS
+FT-09	Remove Assigned License	Admin should be able to remove an assigned license from a user	Assigned license was removed successfully	PASS
+FT-10	User View Assigned Licenses	User should only view licenses assigned to them	Assigned licenses displayed in user dashboard	PASS
+FT-11	Submit Normal License Request	User should be able to submit a normal license request	Request was submitted and displayed with normal priority	PASS
+FT-12	Submit Urgent License Request	User should be able to submit urgent request	Request was submitted and priority displayed as high	PASS
+FT-13	View License Requests as Admin	Admin should see all user license requests	All pending/processed requests displayed in Requests page	PASS
+FT-14	Approve License Request	Admin should approve pending request and assign license automatically	Request status changed to approved and license assigned to user	PASS
+FT-15	Reject License Request	Admin should reject pending request	Request status changed to rejected	PASS
+FT-16	Prevent Duplicate Assignment	System should prevent assigning same license twice to same user	Error message displayed when duplicate assignment attempted	PASS
+FT-17	Prevent Assignment When No Licenses Available	System should prevent assignment when total license limit is reached	Error message displayed: no licenses available	PASS
+FT-18	Role-Based Navigation for Admin	Admin should see Licenses, Users, Requests and Logout in navbar	Admin navbar options displayed correctly	PASS
+FT-19	Role-Based Navigation for User	User should only see user-related options and Logout	User navbar displayed without admin-only options	PASS
+FT-20	Logout	User/admin should logout and return to login page	Session ended and login page displayed	PASS
+FT-21	User Registration	New user account should be created successfully and stored in database	User account created successfully and user details stored in database	PASS
+FT-22	User Registration with Existing Email	System should display error message for duplicate email	Error message displayed indicating email already exists	PASS
+
+4.3 Functional Testing Evidence
+Backend Functional Testing
+[PLACEHOLDER – Insert Backend Functional Testing Screenshot]
+
+Frontend Functional Testing
+[PLACEHOLDER – Insert Frontend Functional Testing Screenshot]
+
+Role-Based Navigation Testing
+[PLACEHOLDER – Insert Admin/User Navigation Screenshot]
+
+Error Validation Testing
+[PLACEHOLDER – Insert Validation/Error Message Screenshot]
+
+4.4 Functional Testing Analysis
+The functional testing results demonstrate that the Devolenz Software License Management System successfully met all major functional requirements defined in the Software Requirements Specification (SRS). Authentication, authorization, license management, request workflows, and user management features operated correctly under different user scenarios.
+The testing also verified that the system properly handled invalid operations such as duplicate assignments, duplicate registrations, and license allocation when no licenses were available. Role-based access control worked as expected by restricting administrative features from standard users.
+Overall, the testing process confirmed that the application is stable, reliable, and capable of supporting the intended business operations without major functional issues.
+
+5. CI/CD Pipeline Setup
+5.1 Workflow File (YML)
+GitHub Actions was used to implement the CI/CD pipeline.
+The workflow automates:
+Dependency installation
+Test execution
+Deployment steps
+[PLACEHOLDER – Insert GitHub Actions YML Screenshot]
+
+5.2 EC2 Server Configuration
+PM2 was used for process management to keep frontend and backend services running continuously.
+[PLACEHOLDER – Insert PM2 Status Output Screenshot]
+
+5.3 GitHub Run Test Page
+GitHub Actions workflow execution was verified through successful pipeline runs.
+[PLACEHOLDER – Insert GitHub Actions Run Screenshot]
+
+5.4 Public Application Deployment
+The application was successfully deployed on AWS EC2 and accessed using the public IP and Application Load Balancer DNS.
+[PLACEHOLDER – Insert Browser Screenshot with Public IP]
+
+6. Load Balancing and Load Testing
+6.1 Load Balancer Setup
+The application was deployed on two separate AWS EC2 instances to improve reliability and availability. An AWS Application Load Balancer (ALB) was configured to distribute incoming traffic evenly between both servers.
+The target group was configured using HTTP protocol with port 3000, and both EC2 instances were registered successfully. Health checks were configured to monitor the application availability.
+Evidence
+(a) EC2 Instances Running
+[PLACEHOLDER – Insert Screenshot of Both EC2 Instances Running]
+
+(b) Target Group Healthy
+[PLACEHOLDER – Insert Screenshot of Target Group Showing Both Healthy]
+
+(c) Application Load Balancer Active
+[PLACEHOLDER – Insert Screenshot of ALB Active State and DNS Name]
+
+(d) Traffic Distribution Confirmation
+The ALB DNS was accessed multiple times to confirm round-robin load balancing.
+[PLACEHOLDER – Insert Browser/Curl Screenshot Showing Alternating Responses]
+
+6.2 Load Testing and Performance Analysis
+Load testing was conducted using Apache Benchmark (ab) to evaluate application performance under concurrent user requests.
+Baseline Load Test
+The first load test was conducted using lower concurrency.
+Example command:
+ab -n 100 -c 10 http://<ALB-DNS>/
+
+Key Metrics
+Requests per second measures how many requests the server can process per second.
+Time per request measures average request processing time.
+Failed requests indicate unsuccessful responses.
+The system demonstrated stable performance with zero failed requests.
+[PLACEHOLDER – Insert Apache Benchmark Baseline Test Screenshot]
+
+Higher Concurrency Load Test
+A second test was conducted with higher concurrency and request count.
+Example command:
+ab -n 500 -c 50 http://<ALB-DNS>/
+
+The second test showed slightly higher response times due to increased traffic load, but the application remained stable without failed requests.
+[PLACEHOLDER – Insert Higher Concurrency Apache Benchmark Screenshot]
+
+CloudWatch Metrics
+AWS CloudWatch was used to monitor CPU utilization and performance metrics during load testing.
+The metrics demonstrated CPU usage spikes during benchmark execution, confirming that the servers processed increased workloads successfully.
+[PLACEHOLDER – Insert CloudWatch CPU Utilization Screenshot]
+
+Brief Analysis
+The AWS Application Load Balancer successfully distributed incoming traffic between two EC2 instances using round-robin load balancing. During load testing with Apache Benchmark, the system maintained stable performance with zero failed requests and acceptable response times even under higher concurrency levels. CloudWatch metrics showed temporary CPU utilisation spikes during stress testing, demonstrating that the infrastructure responded appropriately to increased demand. The implementation improved application reliability and availability by preventing a single point of failure while also providing a cost-effective cloud deployment solution using lightweight EC2 instances and managed AWS services.
+
+7. Team Collaboration
+7.1 Team Collaboration Statement
+The team collaborated using GitHub, online meetings, and group communication channels throughout the development process. Tasks were distributed among members based on technical strengths and responsibilities.
+Regular discussions were conducted to review progress, resolve technical issues, and coordinate deployment activities.
+GitHub feature branches and pull requests were used to maintain code quality and reduce integration conflicts.
+
+7.2 Team Collaboration Evidence
+GitHub Commit History
+[PLACEHOLDER – Insert GitHub Commit Graph Screenshot]
+
+Feature Branches and Pull Requests
+[PLACEHOLDER – Insert Pull Request Screenshot]
+
+Merge Conflict Resolution
+[PLACEHOLDER – Insert Merge Conflict Screenshot]
+
+Team Meetings
+Date	Discussion
+[Add]	Project Planning
+[Add]	Frontend Development
+[Add]	Backend API Integration
+[Add]	AWS Deployment
+[Add]	Testing and Documentation
+
+Communication Evidence
+[PLACEHOLDER – Insert Team Communication Screenshot]
+
+8. Discussion and Conclusion
+The development of the Devolenz Software License Management System provided valuable experience in full-stack software development, cloud deployment, testing, and DevOps practices.
+The project successfully implemented core software engineering concepts including SRS documentation, design patterns, object-oriented programming principles, API testing, CI/CD pipeline integration, and cloud infrastructure deployment.
+AWS services such as EC2, Application Load Balancer, and CloudWatch significantly improved the reliability and scalability of the system. The implementation of load balancing demonstrated how cloud-based architectures can improve availability and fault tolerance.
+Throughout the project, the team faced challenges related to deployment configuration, load balancing setup, target group health checks, and environment management. These challenges improved the team’s understanding of cloud networking, application deployment, and infrastructure monitoring.
+In conclusion, the project achieved its intended objectives by delivering a functional and scalable software license management system with cloud-based deployment and monitoring capabilities.
+
+9. Reflection
+This project provided significant practical experience in software development, cloud deployment, testing, and team collaboration. One of the most valuable lessons learned was how different software engineering concepts integrate together in a real-world application.
+The implementation of AWS services such as EC2, Load Balancer, and CloudWatch improved understanding of cloud infrastructure and system scalability. Configuring target groups, managing security groups, and troubleshooting health checks provided hands-on experience with cloud networking concepts.
+The project also strengthened knowledge of CI/CD pipelines and deployment automation using GitHub Actions and PM2. Team collaboration through GitHub branches, pull requests, and merge conflict resolution improved version control and collaborative development skills.
+Several technical difficulties were encountered during development. These included API connection issues, load balancer timeout errors, target group health check failures, and frontend/backend deployment synchronization problems. Resolving these issues required extensive debugging, testing, and infrastructure configuration.
+Additionally, the project improved problem-solving skills, communication skills, and understanding of software project management processes. Overall, the project was a valuable learning experience that combined theoretical knowledge with practical implementation.
+
+Gen-AI Usage Declaration
+Gen-AI tools such as ChatGPT were used during the development of this project for:
+Debugging deployment issues
+Generating documentation ideas
+Improving report writing
+Understanding AWS configurations
+Refining explanations and technical descriptions
+All generated content was reviewed, modified, verified, and implemented manually by the project team.
+
+References
+Amazon Web Services. (2026). Elastic Load Balancing documentation. https://docs.aws.amazon.com/elasticloadbalancing/
+Amazon Web Services. (2026). Amazon CloudWatch documentation. https://docs.aws.amazon.com/cloudwatch/
+Express.js. (2026). Express documentation. https://expressjs.com/
+GitHub. (2026). GitHub Actions documentation. https://docs.github.com/en/actions
+MongoDB. (2026). MongoDB documentation. https://www.mongodb.com/docs/
+Node.js. (2026). Node.js documentation. https://nodejs.org/en/docs/
+React. (2026). React documentation. https://react.dev/
